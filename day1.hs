@@ -1,8 +1,8 @@
 import Data.Char (isDigit)
 import Data.List (isPrefixOf)
 
-takeHeadTail (x:[]) = [x, x]
-takeHeadTail (x:xs) = [x, last xs]
+takeHeadLast (x:[]) = [x, x]
+takeHeadLast (x:xs) = [x, last xs]
 
 toString [] = []
 toString s@(c:cs)
@@ -21,8 +21,8 @@ toString s@(c:cs)
 
 takeDigits s = foldr (\x acc -> if isDigit x then x:acc else acc) [] s
 
-answerOne s = sum $ map (read . takeHeadTail . takeDigits) $ lines $ s
+answerOne s = sum $ map (read . takeHeadLast . takeDigits) $ lines $ s
 
-answerTwo s = sum $ map (read . takeHeadTail . toString) $ lines $ s
+answerTwo s = sum $ map (read . takeHeadLast . toString) $ lines $ s
 
 main = interact $ show . answerOne
