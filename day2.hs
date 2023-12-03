@@ -12,9 +12,6 @@ type Bag = (Reds, Greens, Blues)
 validBag :: Bag -> Bool
 validBag (reds, greens, blues) = reds <= 12 && greens <= 13 && blues <= 14
 
-valid :: Game -> Bool
-valid (_, bags) = all validBag bags
-
 parseBag :: String -> Bag
 parseBag str = go (0, 0, 0) (words $ filter (/= ',') str)
   where
@@ -22,8 +19,6 @@ parseBag str = go (0, 0, 0) (words $ filter (/= ',') str)
     go (red, green, _) (n:"blue":xs) = go (red, green, read n) xs
     go (red, _, blue) (n:"green":xs) = go (red, read n, blue) xs
     go (_, green, blue) (n:"red":xs) = go (read n, green, blue) xs
-
-gameId (id, _) = id
 
 parse :: String -> Game
 parse s =
@@ -43,7 +38,7 @@ findOpt (_, bags) =
 power (reds, greens, blues) = reds * greens * blues
 
 answerOne :: [String] -> String
-answerOne games = show $ sum $ map gameId $ filter valid $ map parse games
+answerOne games = show $ sum $ map fst $ filter (all validBag . snd) $ map parse games
 
 answerTwo :: [String] -> String
 answerTwo games = show $ sum $ map (power . findOpt) $ map parse games
